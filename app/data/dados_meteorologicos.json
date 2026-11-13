@@ -1,0 +1,24 @@
+{
+    "latitude": -26.4851,
+    "longitude": -49.0713,
+    "timezone": "America/Sao_Paulo",
+    "timezone_abbreviation": "GMT-3",
+    "utc_offset_seconds": -10800,
+    "elevation": 30.0,
+    "current_units": {
+        "time": "iso8601",
+        "temperature_2m": "°C",
+        "relative_humidity_2m": "%",
+        "apparent_temperature": "°C",
+        "precipitation": "mm",
+        "wind_speed_10m": "km/h"
+    },
+    "current": {
+        "time": "2026-11-12T09:00",
+        "temperature_2m": 24.0,
+        "relative_humidity_2m": 72,
+        "apparent_temperature": 24.8,
+        "precipitation": 0.2,
+        "wind_speed_10m": 10.5
+    }
+}
