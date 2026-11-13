@@ -74,6 +74,7 @@ def consultar_previsao(
     # Dados meteorológicos horários
     if hourly:
         variaveis = hourly.split(",")
+        limite_registros = forecast_days * 24
 
         resposta["hourly"] = {}
         resposta["hourly_units"] = {}
@@ -84,8 +85,6 @@ def consultar_previsao(
                     status_code=400,
                     detail=f"Variável horária não disponível: {variavel}"
                 )
-
-            limite_registros = forecast_days * 24
             resposta["hourly"][variavel] = dados["hourly"][variavel][:limite_registros]
             resposta["hourly_units"][variavel] = dados["hourly_units"][variavel]
 
