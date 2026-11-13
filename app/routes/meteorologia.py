@@ -19,7 +19,13 @@ def consultar_previsao(
     current: str = "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m",
     timezone: str = "America/Sao_Paulo"
 ):
-    dados = carregar_dados_meteorologicos()
+    try:
+        dados = carregar_dados_meteorologicos()
+    except RuntimeError as erro:
+        raise HTTPException(
+            status_code=500,
+            detail=str(erro)
+    )
 
     if latitude != dados["latitude"] or longitude != dados["longitude"]:
         raise HTTPException(
