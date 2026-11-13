@@ -20,5 +20,26 @@
         "apparent_temperature": 24.8,
         "precipitation": 0.2,
         "wind_speed_10m": 10.5
+    },
+    "hourly_units": {
+        "time": "iso8601",
+        "temperature_2m": "°C",
+        "relative_humidity_2m": "%",
+        "precipitation": "mm",
+        "wind_speed_10m": "km/h"
+    },
+    "hourly": {
+        "time": [
+            "2026-11-12T06:00",
+            "2026-11-12T07:00",
+            "2026-11-12T08:00",
+            "2026-11-12T09:00",
+            "2026-11-12T10:00",
+            "2026-11-12T11:00"
+        ],
+        "temperature_2m": [19.5, 20.2, 22.0, 24.0, 25.3, 26.1],
+        "relative_humidity_2m": [88, 85, 80, 72, 68, 64],
+        "precipitation": [0.0, 0.0, 0.1, 0.2, 0.0, 0.0],
+        "wind_speed_10m": [5.2, 6.0, 7.4, 10.5, 11.0, 12.3]
     }
 }

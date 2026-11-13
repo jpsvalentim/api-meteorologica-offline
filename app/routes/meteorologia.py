@@ -17,6 +17,7 @@ def consultar_previsao(
     latitude: float,
     longitude: float,
     current: str = "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m",
+    hourly: str = "",
     timezone: str = "America/Sao_Paulo"
 ):
     try:
@@ -25,7 +26,7 @@ def consultar_previsao(
         raise HTTPException(
             status_code=500,
             detail=str(erro)
-    )
+        )
 
     if latitude != dados["latitude"] or longitude != dados["longitude"]:
         raise HTTPException(
@@ -33,33 +34,53 @@ def consultar_previsao(
             detail="Localidade não encontrada."
         )
 
-    variaveis_disponiveis = dados["current"]
-
-    variaveis_solicitadas = current.split(",")
-
-    for variavel in variaveis_solicitadas:
-        if variavel not in variaveis_disponiveis:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Variável não disponível: {variavel}"
-            )
-
     resposta = {
         "latitude": dados["latitude"],
         "longitude": dados["longitude"],
         "timezone": dados["timezone"],
         "timezone_abbreviation": dados["timezone_abbreviation"],
         "utc_offset_seconds": dados["utc_offset_seconds"],
-        "elevation": dados["elevation"],
-        "current_units": {},
-        "current": {}
+        "elevation": dados["elevation"]
     }
 
-    for variavel in variaveis_solicitadas:
-        resposta["current"][variavel] = variaveis_disponiveis[variavel]
-        resposta["current_units"][variavel] = dados["current_units"][variavel]
+    # Dados atuais
+    if current:
+        variaveis = current.split(",")
 
-    resposta["current"]["time"] = variaveis_disponiveis["time"]
-    resposta["current_units"]["time"] = dados["current_units"]["time"]
+        resposta["current"] = {}
+        resposta["current_units"] = {}
+
+        for variavel in variaveis:
+            if variavel not in dados["current"]:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Variável atual não disponível: {variavel}"
+                )
+
+            resposta["current"][variavel] = dados["current"][variavel]
+            resposta["current_units"][variavel] = dados["current_units"][variavel]
+
+        resposta["current"]["time"] = dados["current"]["time"]
+        resposta["current_units"]["time"] = dados["current_units"]["time"]
+
+    # Dados horários
+    if hourly:
+        variaveis = hourly.split(",")
+
+        resposta["hourly"] = {}
+        resposta["hourly_units"] = {}
+
+        for variavel in variaveis:
+            if variavel not in dados["hourly"]:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Variável horária não disponível: {variavel}"
+                )
+
+            resposta["hourly"][variavel] = dados["hourly"][variavel]
+            resposta["hourly_units"][variavel] = dados["hourly_units"][variavel]
+
+        resposta["hourly"]["time"] = dados["hourly"]["time"]
+        resposta["hourly_units"]["time"] = dados["hourly_units"]["time"]
 
     return resposta
