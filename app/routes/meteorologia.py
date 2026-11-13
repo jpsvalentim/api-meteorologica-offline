@@ -19,6 +19,7 @@ def consultar_previsao(
     longitude: float,
     current: str = "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m",
     hourly: str = "",
+    forecast_days: int = 1,
     timezone: str = "America/Sao_Paulo"
 ):
     try:
@@ -34,6 +35,12 @@ def consultar_previsao(
             status_code=404,
             detail="Localidade não encontrada."
         )
+    
+    if hourly and (forecast_days < 1 or forecast_days > 7):
+        raise HTTPException(
+            status_code=400,
+            detail="O parâmetro forecast_days deve estar entre 1 e 7."
+    )
 
     resposta = {
         "latitude": dados["latitude"],
@@ -78,10 +85,11 @@ def consultar_previsao(
                     detail=f"Variável horária não disponível: {variavel}"
                 )
 
-            resposta["hourly"][variavel] = dados["hourly"][variavel]
+            limite_registros = forecast_days * 24
+            resposta["hourly"][variavel] = dados["hourly"][variavel][:limite_registros]
             resposta["hourly_units"][variavel] = dados["hourly_units"][variavel]
 
-        resposta["hourly"]["time"] = dados["hourly"]["time"]
+        resposta["hourly"]["time"] = dados["hourly"]["time"][:limite_registros]
         resposta["hourly_units"]["time"] = dados["hourly_units"]["time"]
 
     return resposta
