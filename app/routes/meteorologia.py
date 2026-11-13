@@ -12,6 +12,7 @@ def verificar_status():
     }
 
 
+
 @router.get("/v1/forecast")
 def consultar_previsao(
     latitude: float,
@@ -43,7 +44,7 @@ def consultar_previsao(
         "elevation": dados["elevation"]
     }
 
-    # Dados atuais
+    # Dados meteorológicos atuais
     if current:
         variaveis = current.split(",")
 
@@ -63,7 +64,7 @@ def consultar_previsao(
         resposta["current"]["time"] = dados["current"]["time"]
         resposta["current_units"]["time"] = dados["current_units"]["time"]
 
-    # Dados horários
+    # Dados meteorológicos horários
     if hourly:
         variaveis = hourly.split(",")
 
